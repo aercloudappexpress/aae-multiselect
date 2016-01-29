@@ -1,0 +1,63 @@
+<!--
+@license
+Copyright (c) 2015 The AerCloud Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://aercloud.github.io/LICENSE.txt
+The complete set of authors may be found at http://aercloud.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://aercloud.github.io/CONTRIBUTORS.txt
+Code distributed by Aeris as part of the aercloud project is also
+subject to an additional IP rights grant found at http://aercloud.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<!--
+The AppExpress Multi Select object.
+
+@demo demo/index.html
+-->
+
+<dom-module id='aae-multiselect'>
+	<style>
+	</style>
+
+	<template>
+    <paper-menu multi on-iron-select="_selectItem" on-iron-deselect="_deselectItem">
+      <template is='dom-repeat' items='{{items}}' as='item'>
+        <paper-item role="menuitem" id='{{item.id}}'>{{_removePrefix(item.name)}}</paper-item>
+      </template>
+    </paper-menu>
+	</template>
+</dom-module>
+
+<script>
+// element registration
+var selected = [];
+Polymer({
+  is: 'aae-multiselect',
+  properties: {
+    itemPrefix: String,
+    items: Array
+  },
+  _selectItem: function(e, item) {
+    selected.push(item.item.id);
+    console.log('selected ' + selected);
+  },
+  _deselectItem: function(e, item) {
+    var index = selected.indexOf(item.item.id);
+    selected.splice(index, 1);
+    console.log('selected ' + selected);
+  },
+  _removePrefix: function(group) {
+    if (this.itemPrefix) {
+      return group.substring(this.itemPrefix.length);
+    } else {
+      return group;
+    }
+  },
+  selected: function() {
+    return selected;
+  }
+});
+</script>
